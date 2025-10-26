@@ -4,8 +4,6 @@ import path from 'path'
 import { pluginSass } from '@rsbuild/plugin-sass'
 import { pluginSvgSpriteLoader } from 'rsbuild-svg-sprite-loader'
 
-// const name = defaultSettings.title || '风险企业监测治理模型'
-
 function rootPath(dir) {
   let currentDir = new URL('.', import.meta.url).pathname
   return path.join(currentDir, dir)
@@ -14,9 +12,9 @@ function rootPath(dir) {
 export default defineConfig(({ env, command, envMode }) => {
   const currEnv = loadEnv({ prefixes: ['VUE_APP_'] })
 
-  // console.log(currEnv)
+  const { VUE_APP_BASE_API, VUE_APP_TITLE } = currEnv.parsed
 
-  const { VUE_APP_BASE_API } = currEnv.parsed
+  const htmlDefaultTitle = VUE_APP_TITLE || '若依管理系统'
 
   return {
     plugins: [
@@ -44,6 +42,9 @@ export default defineConfig(({ env, command, envMode }) => {
     },
     html: {
       template: './public/index.html',
+      templateParameters: {
+        htmlDefaultTitle,
+      },
     },
     server: {
       port: 3006,
